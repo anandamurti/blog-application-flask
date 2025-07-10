@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Post{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+
+    <h3 class="mb-4">Edit Post</h3>
+
+    {% from "macros/forms.html" import render_field %}
+    <form method="POST" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+      {{ render_field(form.title) }}
+      {{ render_field(form.body) }}
+      {{ render_field(form.category) }}
+      {{ render_field(form.new_category) }}
+      {% if post.image %}
+        <div class="mb-3">
+            <p class="text-muted">Current image:</p>
+            <img src="{{ url_for('static', filename='uploads/' ~ post.image) }}"
+                class="img-thumbnail mb-2" style="max-height: 200px;" alt="Current image">
+        </div>
+       {% endif %}
+     {{ render_field(form.image) }}
+      <button type="submit" class="btn btn-primary">Update Post</button>
+    </form>
+
+  </div>
+</div>
+{% endblock %}
