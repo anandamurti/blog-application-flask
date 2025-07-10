@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+
+    {% if post.image %}
+      <img src="{{ url_for('static', filename='uploads/' ~ post.image) }}"
+           alt="Post Image"
+           class="img-fluid rounded mb-4"
+           style="max-height: 300px; object-fit: cover;">
+    {% endif %}
+
+    <h3 class="mb-3">{{ post.title }}</h3>
+    {% if session.get('is_author')%}
+    <a href="{{ url_for('home.edit', post_id=post.id) }}">Edit</a> -
+    <a href="{{ url_for('home.delete', post_id=post.id) }}">Delete</a>
+    {% endif %}
+
+    <div class="mb-4">
+      {{ post.body | markdown }}
+    </div>
+
+    <hr />
+
+    <div class="text-muted small">
+      Posted by <strong>{{ post.author.fullname if post.author else "Unknown" }}</strong>
+      on {{ post.publish_date.strftime('%Y-%m-%d') }}
+      in <em>{{ post.category.name if post.category else "Uncategorized" }}</em>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
