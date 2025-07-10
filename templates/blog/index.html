@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}{{ blog.name }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+
+    <h1 class="mb-4">
+      <a href="{{ url_for('home.index') }}" class="text-decoration-none text-dark">
+        {{ blog.name }}
+      </a>
+    </h1>
+
+    {% if posts.items %}
+    <div class="post-list">
+      {% for post in posts.items %}
+        <div class="post-item mb-4">
+          <div class="row">
+            <div class="col-md-9">
+              <h4>
+                <a href="{{ url_for('home.article', slug=post.slug) }}">
+                  {{ post.title }}
+                </a>
+              </h4>
+              <div class="text-muted small">
+                Posted by
+                <strong>{{ post.author.fullname if post.author else "Unknown" }}</strong>
+                on {{ post.publish_date.strftime('%Y-%m-%d') }}
+                in <em>{{ post.category.name if post.category else "Uncategorized" }}</em>
+              </div>
+            </div>
+            <div class="col-md-3 text-end">
+              {% if post.image %}
+                <img src="{{ url_for('static', filename='uploads/' ~ post.image) }}"
+                     class="img-thumbnail float-end" height="60" alt="Post Image">
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    
+
+      {# Numbered Pagination #}
+      {% if posts.pages > 1 %}
+      <nav class="mt-4" aria-label="Pagination">
+        <ul class="pagination justify-content-center">
+
+          {# Previous page #}
+          <li class="page-item {% if not posts.has_prev %}disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('home.index', page=posts.prev_num) }}"
+               tabindex="-1" aria-disabled="{{ not posts.has_prev }}">
+              &laquo; Prev
+            </a>
+          </li>
+
+          {# Page number links #}
+          {% for page_num in posts.iter_pages(left_edge=2, right_edge=2, left_current=2, right_current=2) %}
+            {% if page_num %}
+              <li class="page-item {% if page_num == posts.page %}active{% endif %}">
+                <a class="page-link" href="{{ url_for('home.index', page=page_num) }}">
+                  {{ page_num }}
+                </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <span class="page-link">…</span>
+              </li>
+            {% endif %}
+          {% endfor %}
+
+          {# Next page #}
+          <li class="page-item {% if not posts.has_next %}disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('home.index', page=posts.next_num) }}"
+               aria-disabled="{{ not posts.has_next }}">
+              Next &raquo;
+            </a>
+          </li>
+
+        </ul>
+      </nav>
+      {% endif %}
+
+    {% else %}
+      <p class="text-muted">No posts yet.</p>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}
+
+
