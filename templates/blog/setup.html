@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Blog Creation{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+
+        <h3 class="mb-4">Blog Creation</h3>
+
+        {% from "macros/forms.html" import render_field %}
+        <form method="POST" action="{{ url_for('home.setup') }}" enctype="multipart/form-data" role="form">
+            {{ form.hidden_tag() }}
+
+            <h4 class="mt-4">Blog Information</h4>
+            {{ render_field(form.name, placeholder='Blog name') }}
+
+            <h4 class="mt-4">Admin User</h4>
+            {{ render_field(form.fullname, placeholder='Your full name') }}
+            {{ render_field(form.email, placeholder='email@example.com') }}
+            {{ render_field(form.username, placeholder='Choose a username') }}
+            {{ render_field(form.password, placeholder='Enter a password') }}
+            {{ render_field(form.confirm, placeholder='Repeat password') }}
+
+            {# ✅ Add image upload field if present in form.py #}
+            {{ render_field(form.image) }}
+
+            <button type="submit" class="btn btn-primary w-100 mt-4">Create Blog</button>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
