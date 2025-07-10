@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}New Blog Post{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <h3 class="mb-4">Create New Blog Post</h3>
+
+    {% from "macros/forms.html" import render_field %}
+    <form method="POST"
+          action="{{ url_for('home.post') }}"
+          enctype="multipart/form-data"
+          role="form">
+
+      {{ form.hidden_tag() }}
+      {{ render_field(form.title) }}
+      {{ render_field(form.body) }}
+      {{ render_field(form.category) }}
+      {{ render_field(form.new_category) }}
+
+      <div class="mb-3">
+        <label for="file" class="form-label">Image Upload (optional)</label>
+        <input class="form-control" type="file" id="file" name="file" accept="image/*">
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Post</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
