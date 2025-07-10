@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}User Login{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h3 class="mb-4">Login</h3>
+
+    {% from "macros/forms.html" import render_field %}
+
+    {% if form.errors %}
+      <div class="alert alert-danger">
+        Please check your username and password.
+      </div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('author.login') }}" role="form">
+      {{ form.hidden_tag() }}
+      {{ render_field(form.username, placeholder='Enter your username') }}
+      {{ render_field(form.password, placeholder='Enter your password') }}
+      <button type="submit" class="btn btn-primary w-100">Login</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
