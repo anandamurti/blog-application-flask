@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Author Register{% endblock %}
+
+{% block content %}
+
+
+<div class="row justify-content-center">
+  <div class="col-md-6">
+
+    <h3 class="mb-4">Author Registration</h3>
+    {% from "macros/forms.html" import render_field %}
+
+    {% if form.errors %}
+      <div class="alert alert-danger">
+        Please fix the errors in the form below.
+      </div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('author.register') }}" role="form">
+      {{ form.hidden_tag() }}
+
+      {{ render_field(form.fullname, placeholder='Your full name') }}
+      {{ render_field(form.email, placeholder='email@example.com') }}
+      {{ render_field(form.username, placeholder='Choose a username') }}
+      {{ render_field(form.password, placeholder='Enter a password') }}
+      {{ render_field(form.confirm, placeholder='Repeat password') }}
+
+      <button type="submit" class="btn btn-primary w-100">Register</button>
+    </form>
+
+  </div>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+
+{% endblock %}
